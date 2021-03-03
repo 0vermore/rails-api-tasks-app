@@ -5,7 +5,7 @@ class ApiController < ActionController::API
     before_action :authorized
 
     def encode_token(payload)
-      JWT.encode(payload, Rails.application.secrets.secret_key_base)
+      JWT.encode(payload, Rails.application.secret_key_base)
     end
 
     def auth_header
@@ -22,7 +22,7 @@ class ApiController < ActionController::API
         token = auth_header
         # header: { 'Authorization': 'Bearer <token>' }
         begin
-          JWT.decode(token, Rails.application.secrets.secret_key_base, true, algorithm: 'HS256')
+          JWT.decode(token, Rails.application.secret_key_base, true, algorithm: 'HS256')
         rescue JWT::DecodeError
           Rails.logger.info('Decode: nil')
           nil
